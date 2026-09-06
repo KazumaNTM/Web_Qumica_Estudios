@@ -196,6 +196,7 @@
     nav#main-nav {
         background: var(--card);
         border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 0.25rem;
+        justify-content: center; /* nuevo: centra los botones de pestañas en vez de dejarlos pegados a la izquierda */
         padding: 0.6rem 0.8rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); overflow-x: auto;
     }
     nav#main-nav button {
@@ -212,7 +213,7 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ==================== COMPONENTES COMUNES (idénticos al capítulo 2 original) ==================== */
-    h2 { font-size: 1.45rem; color: var(--primary-dark); margin-bottom: 1.1rem; padding-bottom: 0.4rem; border-bottom: 3px solid var(--primary); }
+    h2 { font-size: 1.45rem; color: var(--primary-dark); margin-bottom: 1.1rem; padding-bottom: 0.4rem; border-bottom: 3px solid var(--primary); text-align: center; }
     h3 { font-size: 1.15rem; color: var(--primary); margin: 1.4rem 0 0.7rem; }
     p, li { margin-bottom: 1rem; }
     ul, ol { padding-left: 1.4rem; margin-bottom: 1.2rem; }
@@ -588,7 +589,7 @@ function seccionTarjetas(cap) {
             '<div class="flashcard-front"><div class="fc-content">' + f.frente + '</div></div>' +
             '<div class="flashcard-back"><div class="fc-content">' + f.dorso + '</div></div></div></div>';
     }).join('');
-    return '<section id="tarjetas"><h2>🃏 Tarjetas de Memoria (Haz clic para girar)</h2>' +
+    return '<section id="tarjetas"><h2>🃏 Tarjetas de Memoria</h2>' +
         '<div class="cards-grid">' + cajas + '</div></section>';
 }
 
