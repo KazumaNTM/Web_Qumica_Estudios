@@ -24,6 +24,26 @@
         --danger: #dc2626;
         --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         --sidebar-w: 230px; /* ancho del menú lateral en escritorio */
+        /* Estas dos variables reemplazan colores que antes estaban "quemados"
+           en el CSS (#f1f5f9 y #f0fdfa). Al pasarlas por variable, el modo
+           oscuro (bloque de abajo) puede recolorearlas sin tocar cada regla. */
+        --bg-soft: #f1f5f9;  /* fondos suaves: hover del menú, glosario, encabezados de tabla */
+        --bg-tint: #f0fdfa;  /* fondo con tinte de color primario: formula-box, capítulo activo */
+    }
+    /* ==================== MODO OSCURO ====================
+       Se activa poniendo el atributo data-theme="dark" en <html> (lo hace
+       la función toggleTheme()). Como el resto del CSS ya usa var(--bg),
+       var(--card), var(--text), etc., no hace falta reescribir ninguna
+       regla: alcanza con redefinir aquí los valores de esas variables. */
+    [data-theme="dark"] {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --border: #334155;
+        --bg-soft: #1e293b;
+        --bg-tint: #16332f;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     }
     body {
         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -31,15 +51,25 @@
         color: var(--text);
         line-height: 1.8;
         min-height: 100vh;
+        transition: background 0.25s ease, color 0.25s ease; /* transición suave al cambiar de tema */
     }
 
-    /* ==================== TIPOGRAFÍA QUÍMICA (igual que antes) ==================== */
-    sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+    /* ==================== TIPOGRAFÍA QUÍMICA ====================
+       OJO: antes "line-height: 0" se aplicaba a CUALQUIER <sup>/<sub> del
+       documento. Eso rompía el interlineado en cualquier texto de varias
+       líneas que tuviera una carga o subíndice suelto (ej. "He2+", "H2O"),
+       como pasaba en las tarjetas de memoria: el texto se veía "desordenado"
+       porque el navegador colapsaba la altura de esa línea. Ahora los
+       sub/sup normales usan un line-height sano, y el line-height:0 (que sí
+       hace falta para apilar los dos números de la notación de isótopos)
+       queda limitado únicamente a los que están DENTRO de .isotope. */
+    sub, sup { font-size: 75%; position: relative; vertical-align: baseline; }
     sup { top: -0.4em; }
-    sub { bottom: -0.2em; }
+    sub { bottom: -0.25em; }
 
     /* ==================== NOTACIÓN DE ISÓTOPOS ==================== */
     .isotope { display: inline-flex; align-items: center; vertical-align: middle; margin: 0 2px; line-height: 1; font-size: 1em; }
+    .isotope sub, .isotope sup { line-height: 0; } /* aquí sí se necesita, para apilar los números */
     .isotope-nums { display: inline-flex; flex-direction: column; justify-content: center; text-align: right; font-size: 0.6em; margin-right: 4px; line-height: 1.2; }
     .isotope-nums span { display: block; }
     .isotope-symbol { font-size: 1em; }
@@ -61,13 +91,14 @@
         font-size: 1.1rem; padding: 0.4rem 0.7rem; border-radius: 6px; cursor: pointer;
         position: absolute; left: 0.8rem;
     }
-    /* Botón para abrir el panel de "Estudiar en el celular" (QR) */
-    #btnQR {
+    /* Botones de la derecha del header: QR, búsqueda, logros y modo oscuro.
+       Van todos dentro de #headerAcciones para poder alinearlos en fila. */
+    #headerAcciones { position: absolute; right: 0.8rem; display: flex; gap: 0.4rem; }
+    #btnQR, #btnBuscar, #btnLogros, #btnTema {
         background: rgba(255,255,255,0.15); border: none; color: white;
         font-size: 1.1rem; padding: 0.4rem 0.7rem; border-radius: 6px; cursor: pointer;
-        position: absolute; right: 0.8rem;
     }
-    #btnQR:hover { background: rgba(255,255,255,0.28); }
+    #btnQR:hover, #btnBuscar:hover, #btnLogros:hover, #btnTema:hover { background: rgba(255,255,255,0.28); }
 
     /* ==================== MODAL DE QR (panel "Estudiar en el celular") ====================
        Elemento independiente del sistema de pestañas/capítulos: no usa la
@@ -91,6 +122,54 @@
         font-size: 1.2rem; cursor: pointer; color: var(--muted);
     }
 
+    /* ==================== MODAL DE BÚSQUEDA GLOBAL (Ctrl+K) ====================
+       Reusa el mismo overlay oscuro que el modal de QR (misma clase .qr-modal
+       para el fondo), pero con su propia "caja" más ancha porque necesita
+       espacio para listar resultados, no solo un botón y un QR. */
+    .search-box {
+        background: var(--card); border-radius: 12px; padding: 1.4rem; max-width: 560px;
+        width: 100%; max-height: 75vh; display: flex; flex-direction: column;
+        box-shadow: var(--shadow);
+    }
+    #buscarInput {
+        width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: 8px;
+        background: var(--bg); color: var(--text); font-size: 1rem; margin-bottom: 0.8rem;
+    }
+    #buscarResultados { overflow-y: auto; }
+    .search-result {
+        padding: 0.8rem 0.9rem; border-radius: 8px; cursor: pointer; margin-bottom: 0.3rem;
+        border: 1px solid transparent;
+    }
+    .search-result:hover { background: var(--bg-soft); border-color: var(--border); }
+    .search-result .sr-meta { font-size: 0.75rem; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+    .search-result .sr-titulo { font-weight: 600; margin: 0.15rem 0; }
+    .search-result .sr-extracto { font-size: 0.82rem; color: var(--muted); }
+    .search-vacio { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: 0.9rem; }
+
+    /* ==================== MODAL DE LOGROS ==================== */
+    .logros-box {
+        background: var(--card); border-radius: 12px; padding: 1.4rem; max-width: 480px;
+        width: 100%; max-height: 75vh; overflow-y: auto; text-align: center; box-shadow: var(--shadow);
+    }
+    .logros-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.8rem; margin: 1rem 0; }
+    .logro-item {
+        background: var(--bg-soft); border: 2px solid var(--border); border-radius: 10px;
+        padding: 0.9rem 0.5rem; opacity: 0.4; transition: all 0.25s ease;
+    }
+    .logro-item.desbloqueado { opacity: 1; border-color: var(--accent); box-shadow: 0 0 14px rgba(245, 158, 11, 0.25); }
+    .logro-item .li-icono { font-size: 1.8rem; margin-bottom: 0.3rem; }
+    .logro-item .li-nombre { font-weight: 700; font-size: 0.82rem; margin-bottom: 0.2rem; }
+    .logro-item .li-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.3; }
+
+    /* ==================== NOTIFICACIÓN "TOAST" (aviso de logro desbloqueado) ==================== */
+    #toast {
+        position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--accent); color: #1a1a1a;
+        padding: 0.9rem 1.3rem; border-radius: 10px; box-shadow: var(--shadow); z-index: 1100;
+        font-weight: 700; font-size: 0.9rem; transform: translateX(150%); transition: transform 0.35s ease;
+        max-width: 280px;
+    }
+    #toast.show { transform: translateX(0); }
+
     /* ==================== LAYOUT GENERAL: sidebar + contenido ==================== */
     .layout { display: flex; align-items: flex-start; min-height: calc(100vh - 64px); }
 
@@ -106,8 +185,8 @@
         background: transparent; border: none; padding: 0.55rem 1rem; cursor: pointer;
         font-size: 0.85rem; color: var(--text); border-left: 3px solid transparent;
     }
-    .chap-item:hover { background: #f1f5f9; }
-    .chap-item.active-chap { background: #f0fdfa; border-left-color: var(--chap-color); font-weight: 700; }
+    .chap-item:hover { background: var(--bg-soft); }
+    .chap-item.active-chap { background: var(--bg-tint); border-left-color: var(--chap-color); font-weight: 700; }
     /* Puntito de color: cada capítulo tiene el suyo (--chap-color), calculado en JS */
     .chap-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--chap-color); flex-shrink: 0; }
     .chap-num { font-weight: 700; color: var(--muted); }
@@ -124,7 +203,7 @@
         font-weight: 600; color: var(--muted); border-radius: 6px; cursor: pointer;
         white-space: nowrap; transition: all 0.2s ease;
     }
-    nav#main-nav button:hover { background: #f1f5f9; color: var(--primary); }
+    nav#main-nav button:hover { background: var(--bg-soft); color: var(--primary); }
     nav#main-nav button.active-nav { background: var(--primary); color: white; }
 
     main { max-width: 920px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
@@ -153,13 +232,13 @@
     .citation-tag .tooltip-text::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #1e293b; }
 
     /* ==================== GLOSARIO ==================== */
-    .glossary { background: #f1f5f9; border-radius: 10px; padding: 1.2rem 1.4rem; margin-top: 1.5rem; font-size: 0.9rem; }
+    .glossary { background: var(--bg-soft); border-radius: 10px; padding: 1.2rem 1.4rem; margin-top: 1.5rem; font-size: 0.9rem; }
     .glossary h4 { margin-bottom: 0.8rem; color: var(--primary-dark); }
     .glossary ol { padding-left: 1.3rem; margin-bottom: 0; }
     .glossary li { margin-bottom: 0.55rem; line-height: 1.55; }
 
     /* ==================== CAJAS DE FÓRMULA ==================== */
-    .formula-box { background: #f0fdfa; border-left: 5px solid var(--primary); padding: 1rem 1.2rem; margin: 1.2rem 0; border-radius: 0 8px 8px 0; font-family: 'Consolas', 'Courier New', monospace; font-size: 1.05rem; }
+    .formula-box { background: var(--bg-tint); border-left: 5px solid var(--primary); padding: 1rem 1.2rem; margin: 1.2rem 0; border-radius: 0 8px 8px 0; font-family: 'Consolas', 'Courier New', monospace; font-size: 1.05rem; }
     .formula-box .vars { font-family: 'Segoe UI', sans-serif; font-size: 0.9rem; color: var(--muted); margin-top: 0.6rem; }
     .fuente-nota { font-size: 0.9rem; color: var(--muted); }
 
@@ -170,7 +249,7 @@
     /* ==================== TABLAS ==================== */
     table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
     th, td { border: 1px solid var(--border); padding: 0.55rem 0.7rem; text-align: left; }
-    th { background: #f1f5f9; color: var(--primary-dark); }
+    th { background: var(--bg-soft); color: var(--primary-dark); }
 
     /* ==================== EJERCICIOS Y TEST ==================== */
     .exercise-item, .test-q { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1.1rem; box-shadow: var(--shadow); }
@@ -184,21 +263,37 @@
     .feedback.ok { color: var(--success); }
     .feedback.err { color: var(--danger); }
     .test-q label { display: block; padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; margin-bottom: 0.3rem; }
-    .test-q label:hover { background: #f1f5f9; }
+    .test-q label:hover { background: var(--bg-soft); }
     .selected-opt { background: #e0f2fe; }
     .correct-opt { background: #dcfce7 !important; }
     .wrong-opt { background: #fee2e2 !important; }
+    /* En modo oscuro los tonos pastel de arriba se ven "lavados": los
+       oscurecemos para que sigan siendo legibles sobre fondo oscuro. */
+    [data-theme="dark"] .selected-opt { background: #0c4a6e; }
+    [data-theme="dark"] .correct-opt { background: #14532d !important; }
+    [data-theme="dark"] .wrong-opt { background: #7f1d1d !important; }
 
     /* ==================== FLASHCARDS ==================== */
     .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
-    .flashcard-container { perspective: 1000px; height: 160px; }
+    .flashcard-container { perspective: 1000px; height: 190px; } /* antes: 160px — un poco más de alto para respuestas de varias líneas */
     .flashcard { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.5s; cursor: pointer; }
     .flashcard.flipped { transform: rotateY(180deg); }
     .flashcard-front, .flashcard-back {
         position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px;
-        display: flex; align-items: center; justify-content: center; text-align: center; padding: 1rem;
+        display: flex; align-items: center; justify-content: center; padding: 1rem; /* el flex aquí SOLO centra el div .fc-content de abajo */
         font-size: 0.92rem; box-shadow: var(--shadow);
+        overflow-y: auto; /* si un capítulo trae un texto más largo, hace scroll en vez de desbordarse */
     }
+    /* Este div interno es el que realmente contiene el texto de la tarjeta.
+       A propósito NO es flex: usa flujo de bloque normal, igual que un
+       párrafo cualquiera del sitio, para que <sup>, <sub> y .isotope se
+       lean "corridos" junto al texto (ej. "He2+") en vez de saltar cada
+       uno a su propia línea, que es lo que pasaba cuando el flex estaba
+       puesto directamente sobre .flashcard-front/.flashcard-back. */
+    .fc-content {
+        width: 100%; text-align: center; line-height: 1.4; word-break: break-word;
+    }
+    .fc-content br { content: ""; display: block; margin-top: 0.3rem; } /* un poco de aire entre líneas separadas con <br> */
     .flashcard-front { background: var(--primary); color: white; }
     .flashcard-back { background: var(--card); border: 2px solid var(--primary); transform: rotateY(180deg); }
 
@@ -238,7 +333,12 @@
                 <h1 id="tituloCapituloActivo">Química General</h1>
                 <div class="subtitle">Chang &amp; Overby, 15ª Ed.</div>
             </div>
-            <button id="btnQR" aria-label="Estudiar en el celular (QR)">📱</button>
+            <div id="headerAcciones">
+                <button id="btnBuscar" aria-label="Buscar (Ctrl+K)" title="Buscar (Ctrl+K)">🔍</button>
+                <button id="btnLogros" aria-label="Ver logros" title="Logros">🏆</button>
+                <button id="btnTema" aria-label="Cambiar a modo oscuro" title="Modo oscuro">🌙</button>
+                <button id="btnQR" aria-label="Estudiar en el celular (QR)" title="Estudiar en el celular">📱</button>
+            </div>
         </header>
         <nav id="main-nav">
             <button data-page="objetivos">🎯 Objetivos</button>
@@ -271,6 +371,31 @@
             <div id="qrResultado"></div>
         </div>
     </div>
+
+    <!-- ==================== MODAL DE BÚSQUEDA GLOBAL (Ctrl+K) ====================
+         Busca en TODOS los capítulos cargados (conceptos, fórmulas, ejemplos,
+         ejercicios, preguntas de test y tarjetas) usando los mismos campos que
+         ya usa el motor para dibujar cada capítulo, así que no depende de que
+         capituloXX.js agregue nada nuevo. -->
+    <div id="buscarModal" class="qr-modal">
+        <div class="search-box">
+            <input type="text" id="buscarInput" placeholder="Buscar conceptos, fórmulas, ejercicios..." autocomplete="off">
+            <div id="buscarResultados"></div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL DE LOGROS ==================== -->
+    <div id="logrosModal" class="qr-modal">
+        <div class="logros-box">
+            <button class="qr-modal-close" id="btnCerrarLogros" aria-label="Cerrar">✕</button>
+            <h3>🏆 Tus Logros</h3>
+            <p id="logrosContador" style="font-size:0.85rem; color:var(--muted); margin-bottom:0.5rem;"></p>
+            <div id="logrosGrid" class="logros-grid"></div>
+        </div>
+    </div>
+
+    <!-- Notificación flotante que aparece cuando se desbloquea un logro -->
+    <div id="toast"></div>
 
     <div class="layout">
         <!-- ==================== MENÚ LATERAL: índice de capítulos ==================== -->
@@ -459,9 +584,9 @@ function seccionTest(cap) {
 
 function seccionTarjetas(cap) {
     var cajas = cap.flashcards.map(function(f) {
-        return '<div class="flashcard-container"><div class="flashcard" onclick="this.classList.toggle(\'flipped\')">' +
-            '<div class="flashcard-front">' + f.frente + '</div>' +
-            '<div class="flashcard-back">' + f.dorso + '</div></div></div>';
+        return '<div class="flashcard-container"><div class="flashcard" onclick="this.classList.toggle(\'flipped\'); registrarFlip()">' +
+            '<div class="flashcard-front"><div class="fc-content">' + f.frente + '</div></div>' +
+            '<div class="flashcard-back"><div class="fc-content">' + f.dorso + '</div></div></div></div>';
     }).join('');
     return '<section id="tarjetas"><h2>🃏 Tarjetas de Memoria (Haz clic para girar)</h2>' +
         '<div class="cards-grid">' + cajas + '</div></section>';
@@ -475,7 +600,7 @@ function seccionPractica(cap) {
         '<button class="btn" onclick="setPracticeLevel(\'medio\')" style="background:var(--accent);">Medio</button>' +
         '<button class="btn" onclick="setPracticeLevel(\'dificil\')" style="background:var(--danger);">Difícil</button>' +
         '</div>' +
-        '<div class="exercise-item" style="background:#f1f5f9;">' +
+        '<div class="exercise-item" style="background:var(--bg-soft);">' +
         '<span id="practiceLevelBadge" class="level-badge level-1">Nivel Fácil</span>' +
         '<p><strong>Pregunta:</strong> <span id="practiceQuestion">Selecciona un nivel para comenzar.</span></p>' +
         '<div class="practice-answer-area">' +
@@ -536,6 +661,11 @@ function cargarCapitulo(numero) {
     practicaBanco = cap.practica;
     practicaScore = 0;
     setPracticeLevel('facil');
+
+    // Registra la visita para el sistema de logros y reinicia el conteo de
+    // aciertos del Test (cada capítulo lleva su propio conteo de "perfecto").
+    registrarCapituloVisitado(numero);
+    testProgress[numero] = { correctas: {}, total: cap.quiz.length };
 }
 
 /* ==================== NAVEGACIÓN ENTRE PESTAÑAS ==================== */
@@ -602,6 +732,236 @@ document.getElementById('qrModal').addEventListener('click', function(e) {
     if (e.target.id === 'qrModal') cerrarModalQR(); // clic fuera de la caja cierra el modal
 });
 
+/* ============================================================================
+   MODO OSCURO
+   Guarda la preferencia en localStorage con la clave 'temaOscuro' (mismo
+   estilo de nombres que 'ultimoCapitulo' y 'qrUrlGuardada' que ya usa este
+   archivo). Si el usuario nunca lo tocó, respeta el tema del sistema
+   operativo/navegador (prefers-color-scheme).
+   ============================================================================ */
+function aplicarTema(esOscuro) {
+    document.documentElement.setAttribute('data-theme', esOscuro ? 'dark' : 'light');
+    var btn = document.getElementById('btnTema');
+    btn.textContent = esOscuro ? '☀️' : '🌙';
+    btn.setAttribute('aria-label', esOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+}
+function toggleTema() {
+    var esOscuroAhora = document.documentElement.getAttribute('data-theme') === 'dark';
+    var nuevoEsOscuro = !esOscuroAhora;
+    aplicarTema(nuevoEsOscuro);
+    localStorage.setItem('temaOscuro', nuevoEsOscuro ? '1' : '0');
+}
+function initTema() {
+    var guardado = localStorage.getItem('temaOscuro');
+    var esOscuro;
+    if (guardado !== null) esOscuro = (guardado === '1');
+    else esOscuro = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    aplicarTema(esOscuro);
+}
+document.getElementById('btnTema').addEventListener('click', toggleTema);
+
+/* ============================================================================
+   SISTEMA DE LOGROS
+   Se activan por acciones del usuario (primer ejercicio, capítulos vistos,
+   test perfecto, uso del buscador, flashcards volteadas, acierto en modo
+   difícil). Todo se guarda en localStorage bajo 'quimicaLogros' /
+   'quimicaEstadisticas', igual que ya hace el resto del motor con sus
+   propias claves ('ultimoCapitulo', etc.), así que conviven sin chocar.
+   ============================================================================ */
+var LOGROS_DEF = [
+    { id: 'primer_ejercicio', icono: '🎯', nombre: 'Primer Paso', desc: 'Resuelve tu primer ejercicio' },
+    { id: 'test_perfecto', icono: '💯', nombre: 'Perfeccionista', desc: '100% en un Test de un capítulo' },
+    { id: 'cap_1', icono: '📖', nombre: 'Iniciado', desc: 'Visita el Capítulo 1' },
+    { id: 'cap_2', icono: '⚛️', nombre: 'Atómico', desc: 'Visita el Capítulo 2' },
+    { id: 'buscador', icono: '🔍', nombre: 'Explorador', desc: 'Usa la búsqueda global' },
+    { id: 'flash_5', icono: '🃏', nombre: 'Memorista', desc: 'Voltea 5 tarjetas de memoria' },
+    { id: 'practica_dificil', icono: '🔥', nombre: 'Desafiante', desc: 'Acierta una pregunta en Nivel Difícil' }
+];
+var logrosDesbloqueados = JSON.parse(localStorage.getItem('quimicaLogros') || '[]');
+var estadisticas = JSON.parse(localStorage.getItem('quimicaEstadisticas') || '{"ejercicios":0,"capitulosVistos":[],"flips":0}');
+// Guarda, por capítulo, qué preguntas del Test ya se contestaron bien (para saber cuándo es "perfecto").
+var testProgress = {};
+
+function guardarEstadisticas() {
+    localStorage.setItem('quimicaEstadisticas', JSON.stringify(estadisticas));
+}
+function unlock(id) {
+    if (logrosDesbloqueados.indexOf(id) !== -1) return; // ya estaba desbloqueado, no repetir el aviso
+    logrosDesbloqueados.push(id);
+    localStorage.setItem('quimicaLogros', JSON.stringify(logrosDesbloqueados));
+    var def = LOGROS_DEF.filter(function(l) { return l.id === id; })[0];
+    if (def) mostrarToast('🏆 ¡Logro desbloqueado: ' + def.nombre + '!');
+}
+function mostrarToast(mensaje) {
+    var toast = document.getElementById('toast');
+    toast.textContent = mensaje;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3500);
+}
+function registrarEjercicioCorrecto() {
+    estadisticas.ejercicios++;
+    if (estadisticas.ejercicios === 1) unlock('primer_ejercicio');
+    guardarEstadisticas();
+}
+function registrarCapituloVisitado(numero) {
+    if (estadisticas.capitulosVistos.indexOf(numero) === -1) {
+        estadisticas.capitulosVistos.push(numero);
+        guardarEstadisticas();
+    }
+    if (numero === 1) unlock('cap_1');
+    if (numero === 2) unlock('cap_2');
+}
+function registrarFlip() {
+    estadisticas.flips++;
+    guardarEstadisticas();
+    if (estadisticas.flips >= 5) unlock('flash_5');
+}
+// contId tiene el formato "c{numeroCapitulo}_tq{numeroPregunta}" (ver la función idc()).
+function registrarAciertoTest(contId) {
+    var match = contId.match(/^c(\d+)_tq(\d+)$/);
+    if (!match) return;
+    var numCap = parseInt(match[1], 10);
+    var numPregunta = match[2];
+    if (!testProgress[numCap]) return;
+    testProgress[numCap].correctas[numPregunta] = true;
+    var totalCorrectas = Object.keys(testProgress[numCap].correctas).length;
+    if (totalCorrectas >= testProgress[numCap].total && testProgress[numCap].total > 0) {
+        unlock('test_perfecto');
+    }
+}
+
+function abrirModalLogros() {
+    document.getElementById('logrosContador').textContent =
+        logrosDesbloqueados.length + ' / ' + LOGROS_DEF.length + ' desbloqueados';
+    var html = LOGROS_DEF.map(function(l) {
+        var desbloqueado = logrosDesbloqueados.indexOf(l.id) !== -1;
+        return '<div class="logro-item' + (desbloqueado ? ' desbloqueado' : '') + '">' +
+            '<div class="li-icono">' + l.icono + '</div>' +
+            '<div class="li-nombre">' + l.nombre + '</div>' +
+            '<div class="li-desc">' + l.desc + '</div></div>';
+    }).join('');
+    document.getElementById('logrosGrid').innerHTML = html;
+    document.getElementById('logrosModal').classList.add('open');
+}
+function cerrarModalLogros() {
+    document.getElementById('logrosModal').classList.remove('open');
+}
+document.getElementById('btnLogros').addEventListener('click', abrirModalLogros);
+document.getElementById('btnCerrarLogros').addEventListener('click', cerrarModalLogros);
+document.getElementById('logrosModal').addEventListener('click', function(e) {
+    if (e.target.id === 'logrosModal') cerrarModalLogros();
+});
+
+/* ============================================================================
+   BÚSQUEDA GLOBAL (Ctrl+K)
+   Recorre window.CAPITULOS (el mismo arreglo que ya llena registrarCapitulo())
+   leyendo SOLO los campos que index01 ya usaba antes de este cambio
+   (conceptos, formulas, ejemplos, ejercicios, quiz, flashcards,
+   resumenPuntos). No depende de que capituloXX.js agregue ningún campo
+   nuevo, así que es compatible con los archivos de capítulos que ya tengas.
+   Al hacer clic en un resultado, carga el capítulo Y salta directo a la
+   pestaña correspondiente (mejora sobre el buscador original, que solo
+   abría el capítulo sin ubicar la pestaña exacta). */
+function quitarEtiquetas(html) {
+    return (html || '').replace(/<[^>]+>/g, '');
+}
+function buscarEnCapitulos(consulta) {
+    var q = consulta.toLowerCase().trim();
+    if (q.length < 2) return [];
+    var resultados = [];
+    window.CAPITULOS.forEach(function(cap) {
+        (cap.conceptos || []).forEach(function(c) {
+            var texto = quitarEtiquetas(c.titulo + ' ' + c.html);
+            if (texto.toLowerCase().indexOf(q) !== -1) {
+                resultados.push({ cap: cap.numero, pagina: 'conceptos', tipo: 'Concepto', titulo: quitarEtiquetas(c.titulo), extracto: texto.substring(0, 90) });
+            }
+        });
+        (cap.formulas || []).forEach(function(f) {
+            var texto = quitarEtiquetas(f.box + ' ' + f.vars);
+            if (texto.toLowerCase().indexOf(q) !== -1) {
+                resultados.push({ cap: cap.numero, pagina: 'formulas', tipo: 'Fórmula', titulo: texto.substring(0, 50), extracto: texto.substring(0, 90) });
+            }
+        });
+        (cap.ejemplos || []).forEach(function(e) {
+            var texto = quitarEtiquetas(e.titulo + ' ' + e.problema);
+            if (texto.toLowerCase().indexOf(q) !== -1) {
+                resultados.push({ cap: cap.numero, pagina: 'ejemplos', tipo: 'Ejemplo', titulo: quitarEtiquetas(e.titulo), extracto: quitarEtiquetas(e.problema).substring(0, 90) });
+            }
+        });
+        (cap.ejercicios || []).forEach(function(ej) {
+            var texto = quitarEtiquetas(ej.enunciado);
+            if (texto.toLowerCase().indexOf(q) !== -1) {
+                resultados.push({ cap: cap.numero, pagina: 'ejercicios', tipo: 'Ejercicio', titulo: texto.substring(0, 60), extracto: texto.substring(0, 90) });
+            }
+        });
+        (cap.quiz || []).forEach(function(pr) {
+            var texto = quitarEtiquetas(pr.pregunta);
+            if (texto.toLowerCase().indexOf(q) !== -1) {
+                resultados.push({ cap: cap.numero, pagina: 'test', tipo: 'Test', titulo: texto.substring(0, 60), extracto: texto.substring(0, 90) });
+            }
+        });
+        (cap.flashcards || []).forEach(function(f) {
+            var texto = quitarEtiquetas(f.frente + ' ' + f.dorso);
+            if (texto.toLowerCase().indexOf(q) !== -1) {
+                resultados.push({ cap: cap.numero, pagina: 'tarjetas', tipo: 'Tarjeta', titulo: quitarEtiquetas(f.frente), extracto: quitarEtiquetas(f.dorso).substring(0, 90) });
+            }
+        });
+        (cap.resumenPuntos || []).forEach(function(p) {
+            var texto = quitarEtiquetas(p);
+            if (texto.toLowerCase().indexOf(q) !== -1) {
+                resultados.push({ cap: cap.numero, pagina: 'resumen', tipo: 'Resumen', titulo: texto.substring(0, 60), extracto: texto.substring(0, 90) });
+            }
+        });
+    });
+    return resultados;
+}
+function ejecutarBusqueda() {
+    var q = document.getElementById('buscarInput').value;
+    var contenedor = document.getElementById('buscarResultados');
+    if (q.trim().length < 2) { contenedor.innerHTML = ''; return; }
+    var resultados = buscarEnCapitulos(q).slice(0, 20);
+    if (!resultados.length) {
+        contenedor.innerHTML = '<div class="search-vacio">Sin resultados. Prueba con otra palabra.</div>';
+        return;
+    }
+    contenedor.innerHTML = resultados.map(function(r, idx) {
+        return '<div class="search-result" onclick="irAResultado(' + idx + ')">' +
+            '<div class="sr-meta">Cap. ' + r.cap + ' · ' + r.tipo + '</div>' +
+            '<div class="sr-titulo">' + r.titulo + '</div>' +
+            (r.extracto ? '<div class="sr-extracto">' + r.extracto + '…</div>' : '') +
+            '</div>';
+    }).join('');
+    window._ultimaBusqueda = resultados; // guardado temporal para poder navegar al hacer clic
+}
+function irAResultado(idx) {
+    var r = window._ultimaBusqueda[idx];
+    if (!r) return;
+    cargarCapitulo(r.cap);
+    mostrarPestana(r.pagina);
+    cerrarBuscador();
+}
+function abrirBuscador() {
+    document.getElementById('buscarModal').classList.add('open');
+    document.getElementById('buscarInput').value = '';
+    document.getElementById('buscarResultados').innerHTML = '';
+    setTimeout(function() { document.getElementById('buscarInput').focus(); }, 50);
+    unlock('buscador'); // el logro se otorga por abrir el buscador, no hace falta encontrar algo
+}
+function cerrarBuscador() {
+    document.getElementById('buscarModal').classList.remove('open');
+}
+document.getElementById('btnBuscar').addEventListener('click', abrirBuscador);
+document.getElementById('buscarInput').addEventListener('input', ejecutarBusqueda);
+document.getElementById('buscarModal').addEventListener('click', function(e) {
+    if (e.target.id === 'buscarModal') cerrarBuscador();
+});
+// Atajo de teclado Ctrl+K (o Cmd+K en Mac) para abrir el buscador desde cualquier pestaña,
+// y Escape para cerrar cualquiera de los tres modales (QR, buscador, logros).
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); abrirBuscador(); }
+    if (e.key === 'Escape') { cerrarModalQR(); cerrarBuscador(); cerrarModalLogros(); }
+});
+
 /* ==================== CITAS TÁCTILES (tocar para ver la fuente en celular) ====================
    Se usa "delegación de eventos" sobre document en vez de enganchar cada cita
    una por una: así funciona también para el HTML que se genera dinámicamente
@@ -623,7 +983,7 @@ function checkExercise(inputId, correct, feedbackId) {
     var fb = document.getElementById(feedbackId);
     var val = parseFloat(input.value);
     if (isNaN(val)) { fb.textContent = '⚠️ Introduce un número válido.'; fb.className = 'feedback err'; return; }
-    if (val === correct) { fb.textContent = '✅ ¡Correcto!'; fb.className = 'feedback ok'; }
+    if (val === correct) { fb.textContent = '✅ ¡Correcto!'; fb.className = 'feedback ok'; registrarEjercicioCorrecto(); }
     else { fb.textContent = '❌ Incorrecto. La respuesta correcta es ' + correct + '.'; fb.className = 'feedback err'; }
 }
 function checkExerciseText(inputId, correct, feedbackId) {
@@ -632,7 +992,7 @@ function checkExerciseText(inputId, correct, feedbackId) {
     var userVal = (input.value || '').trim().replace(/\s+/g, '');
     var correctVal = correct.replace(/\s+/g, '');
     if (userVal === '') { fb.textContent = '⚠️ Introduce una respuesta.'; fb.className = 'feedback err'; return; }
-    if (userVal === correctVal) { fb.textContent = '✅ ¡Correcto!'; fb.className = 'feedback ok'; }
+    if (userVal === correctVal) { fb.textContent = '✅ ¡Correcto!'; fb.className = 'feedback ok'; registrarEjercicioCorrecto(); }
     else { fb.textContent = '❌ Incorrecto. Revisa mayúsculas/minúsculas y subíndices (esperado: ' + correct + ').'; fb.className = 'feedback err'; }
 }
 
@@ -650,6 +1010,7 @@ function checkQuiz(contId, nombreRadio, correcta, fbId) {
     if (selected === correcta) {
         if (selectedLabel) selectedLabel.classList.add('correct-opt');
         fb.textContent = '✅ ¡Correcto! Buena comprensión.'; fb.className = 'feedback ok';
+        registrarAciertoTest(contId); // contId trae el número de capítulo y de pregunta codificados (ver idc())
     } else {
         if (selectedLabel) selectedLabel.classList.add('wrong-opt');
         labels.forEach(function(l, idx) { if (radios[idx].value === correcta) l.classList.add('correct-opt'); });
@@ -726,6 +1087,7 @@ function checkPractice() {
 
     if (isCorrect) {
         feedback.textContent = '✅ ¡Correcto! +1 punto'; feedback.className = 'feedback ok'; practicaScore++;
+        if (practiceLevel === 'dificil') unlock('practica_dificil');
     } else {
         feedback.textContent = '❌ Incorrecto. La respuesta correcta era: ' + currentPracticeAnswer; feedback.className = 'feedback err';
     }
@@ -738,6 +1100,7 @@ document.addEventListener('keydown', function(e) {
 
 /* ==================== ARRANQUE DE LA APLICACIÓN ==================== */
 document.addEventListener('DOMContentLoaded', function() {
+    initTema();
     ajustarAlturaTopbar();
     renderSidebar();
     // Reabre el último capítulo visto, o el primero disponible si es la primera vez.
