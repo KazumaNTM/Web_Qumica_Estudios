@@ -1,0 +1,1 @@
+window.Ejercicios=window.Ejercicios||{};
