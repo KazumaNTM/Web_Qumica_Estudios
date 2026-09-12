@@ -7,6 +7,7 @@
    nunca es aquí.
    ============================================================================ */
 registrarCapitulo({
+    materia: 'quimica', // agrupa este capítulo bajo "Química" en el menú lateral
     numero: 1,
     titulo: 'Medición y las Propiedades de la Materia',
 
@@ -218,7 +219,11 @@ registrarCapitulo({
         { enunciado: 'La densidad del litio, el metal menos denso conocido, es 5,34 × 10² kg/m³. ¿Cuál es esta densidad en g/cm³?', tipo: 'numero', respuesta: 0.534, placeholder: 'Respuesta' },
         { enunciado: 'El punto de fusión del adamantano es 518°F. ¿Cuál es este punto de fusión en kelvin?', tipo: 'numero', respuesta: 543, placeholder: 'Respuesta' },
         { enunciado: '¿Cuántas cifras significativas tiene la medición 2,720 × 10²² átomos?', tipo: 'numero', respuesta: 4, placeholder: 'Respuesta' },
-        { enunciado: 'El volumen de un cuarto es 1,08 × 10⁸ dm³. ¿Cuál es este volumen en m³? (responde en notación normal, sin potencias)', tipo: 'texto', respuesta: '108000', placeholder: 'Respuesta' }
+        { enunciado: 'El volumen de un cuarto es 1,08 × 10⁸ dm³. ¿Cuál es este volumen en m³? (responde en notación normal, sin potencias)', tipo: 'texto', respuesta: '108000', placeholder: 'Respuesta' },
+        { enunciado: 'Convierte 68°F a grados Celsius.', tipo: 'numero', respuesta: 20, placeholder: 'Respuesta' },
+        { enunciado: 'Un objeto de aluminio (densidad 2,70 g/cm³) tiene una masa de 54,0 g. ¿Cuál es su volumen, en cm³?', tipo: 'numero', respuesta: 20, placeholder: 'Respuesta' },
+        { enunciado: '¿Cuántas cifras significativas tiene la medición 0,00620 kg?', tipo: 'numero', respuesta: 3, placeholder: 'Respuesta' },
+        { enunciado: 'Convierte 3,5 km a metros.', tipo: 'numero', respuesta: 3500, placeholder: 'Respuesta' }
     ],
 
     /* ---------------- 6. TEST DE OPCIÓN MÚLTIPLE ----------------
@@ -229,7 +234,12 @@ registrarCapitulo({
         { pregunta: 'La escala Kelvin es la escala de temperatura absoluta porque:', opciones: ['Usa el símbolo de grado (°)', '0 K es la temperatura más baja teóricamente alcanzable y nunca es negativa', 'Se basa en el comportamiento del agua', 'Es igual a la escala Fahrenheit'], correcta: 'b' },
         { pregunta: 'El número 400 cm, escrito sin notación científica, tiene un número de cifras significativas que es:', opciones: ['Siempre una', 'Siempre dos', 'Siempre tres', 'Ambiguo; se necesita notación científica para saberlo'], correcta: 'd' },
         { pregunta: '¿Cuál de los siguientes es un ejemplo de cambio químico?', opciones: ['Hervir agua', 'El hierro se oxida y forma óxido (Fe₂O₃)', 'Fundir un cubo de hielo', 'Disolver azúcar en agua'], correcta: 'b' },
-        { pregunta: 'La densidad es una propiedad:', opciones: ['Extensiva', 'Intensiva', 'Cualitativa', 'Química'], correcta: 'b' }
+        { pregunta: 'La densidad es una propiedad:', opciones: ['Extensiva', 'Intensiva', 'Cualitativa', 'Química'], correcta: 'b' },
+        { pregunta: '¿Cuál es la unidad SI base de la temperatura?', opciones: ['Celsius', 'Fahrenheit', 'Kelvin', 'Rankine'], correcta: 'c' },
+        { pregunta: 'Una balanza mal calibrada que siempre agrega 0,5 g de más a cada medición produce un error:', opciones: ['Aleatorio', 'Sistemático', 'Cualitativo', 'De redondeo'], correcta: 'b' },
+        { pregunta: 'El agua (H₂O) se clasifica como:', opciones: ['Un elemento', 'Una mezcla homogénea', 'Un compuesto', 'Una mezcla heterogénea'], correcta: 'c' },
+        { pregunta: '¿En cuál de estos tres estados las partículas están más separadas entre sí y se mueven con mayor libertad?', opciones: ['Sólido', 'Líquido', 'Gas', 'En los tres es igual'], correcta: 'c' },
+        { pregunta: 'Un factor de conversión es una fracción que equivale a:', opciones: ['0', '1', '10', '100'], correcta: 'b' }
     ],
 
     /* ---------------- 7. TARJETAS DE MEMORIA ---------------- */
@@ -253,7 +263,9 @@ registrarCapitulo({
             { q: '¿Cuál es el punto de congelación del agua en grados Celsius?', a: '0', tipo: 'texto' },
             { q: '¿Cómo se llama el proceso de medir la masa con una balanza?', a: 'pesar', tipo: 'texto' },
             { q: '¿Cuántas cifras significativas tiene la medición 845 cm?', a: '3', tipo: 'texto' },
-            { q: '¿Qué prefijo SI representa 10⁻³?', a: 'mili', tipo: 'texto' }
+            { q: '¿Qué prefijo SI representa 10⁻³?', a: 'mili', tipo: 'texto' },
+            { q: '¿Cuál es la unidad SI base del tiempo?', a: 'segundo', tipo: 'texto' },
+            { q: '¿Cuál es la unidad SI base de la temperatura?', a: 'kelvin', tipo: 'texto' }
         ],
         medio: [
             { q: 'Convierte 25°C a grados Fahrenheit', a: '77', tipo: 'texto' },
@@ -263,7 +275,9 @@ registrarCapitulo({
             { q: '¿Cuál es el elemento más denso conocido?', a: 'osmio', tipo: 'texto' },
             { q: 'Convierte 0°C a kelvin', a: '273.15', tipo: 'texto' },
             { q: '¿Cuántas cifras significativas tiene 40.501 kg?', a: '5', tipo: 'texto' },
-            { q: '¿Qué tipo de mezcla es el aire, homogénea o heterogénea?', a: 'homogénea', tipo: 'texto' }
+            { q: '¿Qué tipo de mezcla es el aire, homogénea o heterogénea?', a: 'homogénea', tipo: 'texto' },
+            { q: 'Convierte 68°F a grados Celsius', a: '20', tipo: 'texto' },
+            { q: '¿Cuántas cifras significativas tiene 0,0620?', a: '3', tipo: 'texto' }
         ],
         dificil: [
             { q: 'Convierte −452°F (punto de ebullición del helio) a grados Celsius', a: '-269', tipo: 'texto' },
@@ -273,7 +287,9 @@ registrarCapitulo({
             { q: 'Convierte 275 L a m³', a: '0.275', tipo: 'texto' },
             { q: 'Convierte la densidad 0,808 g/cm³ a kg/m³', a: '808', tipo: 'texto' },
             { q: 'Una persona ingiere 0,0833 lb de glucosa al día (1 lb = 453,6 g). ¿Cuántos mg son?', a: '37800', tipo: 'texto' },
-            { q: 'Calcula la masa, en g, de 5,50 mL de mercurio (densidad = 13,6 g/mL)', a: '74.8', tipo: 'texto' }
+            { q: 'Calcula la masa, en g, de 5,50 mL de mercurio (densidad = 13,6 g/mL)', a: '74.8', tipo: 'texto' },
+            { q: 'Convierte 310 K a grados Fahrenheit', a: '98.33', tipo: 'texto' },
+            { q: 'Un cubo de platino (densidad 21,5 g/cm³) tiene un volumen de 8,00 cm³. Calcula su masa, en g', a: '172', tipo: 'texto' }
         ]
     },
 

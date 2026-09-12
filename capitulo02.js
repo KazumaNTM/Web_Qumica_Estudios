@@ -7,6 +7,7 @@
    nunca es aquí.
    ============================================================================ */
 registrarCapitulo({
+    materia: 'quimica', // agrupa este capítulo bajo "Química" en el menú lateral
     numero: 2,
     titulo: 'Átomos, Iones y Moléculas',
 
@@ -162,7 +163,11 @@ registrarCapitulo({
         { enunciado: 'Escribe la fórmula del óxido de aluminio (Al<sup>3+</sup> + O<sup>2−</sup>). Usa formato Al2O3.', tipo: 'texto', respuesta: 'Al2O3', placeholder: 'Fórmula' },
         { enunciado: '¿Cuántos electrones tiene el ion P<sup>3−</sup>? (Z del P = 15)', tipo: 'numero', respuesta: 18, placeholder: 'Respuesta' },
         { enunciado: 'El Sb (antimonio) se clasifica como metal, metaloide o no metal. Escribe tu respuesta en minúsculas.', tipo: 'texto', respuesta: 'metaloide', placeholder: 'Respuesta' },
-        { enunciado: '¿Cuántos átomos de carbono tiene el alcano "heptano"?', tipo: 'numero', respuesta: 7, placeholder: 'Respuesta' }
+        { enunciado: '¿Cuántos átomos de carbono tiene el alcano "heptano"?', tipo: 'numero', respuesta: 7, placeholder: 'Respuesta' },
+        { enunciado: '¿Cuántos protones tiene un átomo con número atómico Z = 20?', tipo: 'numero', respuesta: 20, placeholder: 'Respuesta' },
+        { enunciado: '¿Cuántos neutrones tiene el isótopo <sup>14</sup>N (Z = 7)?', tipo: 'numero', respuesta: 7, placeholder: 'Respuesta' },
+        { enunciado: 'Escribe la fórmula del compuesto formado por K<sup>+</sup> y SO<sub>4</sub><sup>2−</sup>. Usa formato K2SO4.', tipo: 'texto', respuesta: 'K2SO4', placeholder: 'Fórmula' },
+        { enunciado: '¿Cuántos átomos de carbono tiene el alcano "pentano"?', tipo: 'numero', respuesta: 5, placeholder: 'Respuesta' }
     ],
 
     /* ---------------- 6. TEST DE OPCIÓN MÚLTIPLE ----------------
@@ -173,7 +178,12 @@ registrarCapitulo({
         { pregunta: 'El ion Cl<sup>−</sup> tiene:', opciones: ['17 protones y 17 electrones', '17 protones y 18 electrones', '18 protones y 17 electrones', '17 protones y 16 electrones'], correcta: 'b' },
         { pregunta: 'La fórmula empírica de H<sub>2</sub>O<sub>2</sub> es:', opciones: ['H<sub>2</sub>O<sub>2</sub>', 'HO', 'H<sub>2</sub>O', 'O<sub>2</sub>'], correcta: 'b' },
         { pregunta: 'Los elementos del Grupo 17 de la tabla periódica se llaman:', opciones: ['Alcalinos', 'Alcalinotérreos', 'Halógenos', 'Gases nobles'], correcta: 'c' },
-        { pregunta: '¿Qué grupo funcional está presente en el ácido acético (CH<sub>3</sub>COOH)?', opciones: ['Hidroxilo (—OH)', 'Amino (—NH<sub>2</sub>)', 'Carboxilo (—COOH)', 'Ninguno, es un hidrocarburo puro'], correcta: 'c' }
+        { pregunta: '¿Qué grupo funcional está presente en el ácido acético (CH<sub>3</sub>COOH)?', opciones: ['Hidroxilo (—OH)', 'Amino (—NH<sub>2</sub>)', 'Carboxilo (—COOH)', 'Ninguno, es un hidrocarburo puro'], correcta: 'c' },
+        { pregunta: '¿Qué carga eléctrica tiene un catión?', opciones: ['Positiva', 'Negativa', 'Neutra', 'Depende del elemento'], correcta: 'a' },
+        { pregunta: 'Los isótopos de un mismo elemento siempre tienen el mismo número de:', opciones: ['Neutrones', 'Protones', 'Nucleones', 'Electrones de valencia únicamente'], correcta: 'b' },
+        { pregunta: '¿Cuál es la fórmula correcta del compuesto iónico formado por Ca<sup>2+</sup> y Cl<sup>−</sup>?', opciones: ['CaCl', 'CaCl<sub>2</sub>', 'Ca<sub>2</sub>Cl', 'CaCl<sub>3</sub>'], correcta: 'b' },
+        { pregunta: 'El Grupo 1 de la tabla periódica (sin contar el hidrógeno) se llama:', opciones: ['Halógenos', 'Gases nobles', 'Alcalinos', 'Alcalinotérreos'], correcta: 'c' },
+        { pregunta: '¿Cuál de estas tres partículas subatómicas NO tiene carga eléctrica?', opciones: ['Protón', 'Electrón', 'Neutrón', 'Catión'], correcta: 'c' }
     ],
 
     /* ---------------- 7. TARJETAS DE MEMORIA ---------------- */
@@ -196,7 +206,9 @@ registrarCapitulo({
             { q: '¿Cómo se llaman los elementos del Grupo 18 de la tabla periódica?', a: 'gases nobles', tipo: 'texto' },
             { q: '¿Cuántos átomos de carbono tiene el alcano "propano"?', a: '3', tipo: 'texto' },
             { q: '¿El flúor (F) es un metal, metaloide o no metal?', a: 'no metal', tipo: 'texto' },
-            { q: '¿Cuántos electrones tiene un átomo neutro de cloro (Z=17)?', a: '17', tipo: 'texto' }
+            { q: '¿Cuántos electrones tiene un átomo neutro de cloro (Z=17)?', a: '17', tipo: 'texto' },
+            { q: '¿Cuántos protones tiene el nitrógeno? (Z=7)', a: '7', tipo: 'texto' },
+            { q: '¿El neón (Ne) es un metal, metaloide o no metal?', a: 'no metal', tipo: 'texto' }
         ],
         medio: [
             { q: '¿Cuántos neutrones tiene el isótopo <sup>39</sup>K?', a: '20', tipo: 'texto' },
@@ -206,7 +218,9 @@ registrarCapitulo({
             { q: '¿Cómo se llaman los elementos del Grupo 1 de la tabla periódica?', a: 'alcalinos', tipo: 'texto' },
             { q: 'Grupo funcional presente en el metanol (CH<sub>3</sub>OH)', a: 'hidroxilo', tipo: 'texto' },
             { q: 'Fórmula empírica de la cafeína, C<sub>8</sub>H<sub>10</sub>N<sub>4</sub>O<sub>2</sub>', a: 'C4H5N2O', tipo: 'formula' },
-            { q: '¿Cuántos átomos de carbono tiene el alcano "hexano"?', a: '6', tipo: 'texto' }
+            { q: '¿Cuántos átomos de carbono tiene el alcano "hexano"?', a: '6', tipo: 'texto' },
+            { q: '¿Cuántos neutrones tiene el isótopo carbono-13?', a: '7', tipo: 'texto' },
+            { q: 'Fórmula del óxido de calcio (Ca<sup>2+</sup>, O<sup>2−</sup>)', a: 'CaO', tipo: 'formula' }
         ],
         dificil: [
             { q: '¿Cuántos neutrones hay en el isótopo <sup>235</sup>U?', a: '143', tipo: 'texto' },
@@ -216,7 +230,9 @@ registrarCapitulo({
             { q: 'Nombre del ácido HClO<sub>4</sub> (partiendo de HClO<sub>3</sub> = ácido clórico)', a: 'ácido perclórico', tipo: 'texto' },
             { q: 'Fórmula del fosfato de calcio (Ca<sup>2+</sup>, PO<sub>4</sub><sup>3−</sup>)', a: 'Ca3(PO4)2', tipo: 'formula' },
             { q: 'Grupo funcional presente en el ácido acético (CH<sub>3</sub>COOH)', a: 'carboxilo', tipo: 'texto' },
-            { q: 'Nombre del compuesto N<sub>2</sub>O<sub>4</sub> (usando prefijos)', a: 'tetróxido de dinitrógeno', tipo: 'texto' }
+            { q: 'Nombre del compuesto N<sub>2</sub>O<sub>4</sub> (usando prefijos)', a: 'tetróxido de dinitrógeno', tipo: 'texto' },
+            { q: '¿Cuántos electrones tiene el ion Al<sup>3+</sup> (Z=13)?', a: '10', tipo: 'texto' },
+            { q: 'Fórmula del sulfato de amonio (NH<sub>4</sub><sup>+</sup>, SO<sub>4</sub><sup>2−</sup>)', a: '(NH4)2SO4', tipo: 'formula' }
         ]
     },
 

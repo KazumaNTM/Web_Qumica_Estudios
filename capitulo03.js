@@ -7,6 +7,7 @@
    nunca es aquí.
    ============================================================================ */
 registrarCapitulo({
+    materia: 'quimica', // agrupa este capítulo bajo "Química" en el menú lateral
     numero: 3,
     titulo: 'Relaciones de Masa en las Reacciones Químicas',
 
@@ -230,7 +231,11 @@ registrarCapitulo({
         { enunciado: 'Calcula el número de moles de cloroformo (CHCl₃) en 198 g de cloroformo.', tipo: 'numero', respuesta: 1.66, placeholder: 'Respuesta' },
         { enunciado: 'Calcula el número de gramos de aluminio (Al) que hay en 371 g de Al₂O₃.', tipo: 'numero', respuesta: 196, placeholder: 'Respuesta' },
         { enunciado: 'En 5Ca + V₂O₅ → 5CaO + 2V, se hacen reaccionar 1,54 × 10³ g de V₂O₅ con 1,96 × 10³ g de Ca. Calcula el rendimiento teórico de V, en gramos.', tipo: 'numero', respuesta: 863, placeholder: 'Respuesta' },
-        { enunciado: 'Si el rendimiento real de V del ejercicio anterior es 803 g, calcula el rendimiento porcentual (%).', tipo: 'numero', respuesta: 93.0, placeholder: 'Respuesta' }
+        { enunciado: 'Si el rendimiento real de V del ejercicio anterior es 803 g, calcula el rendimiento porcentual (%).', tipo: 'numero', respuesta: 93.0, placeholder: 'Respuesta' },
+        { enunciado: '¿Cuál es la masa molar (en g/mol) del dióxido de carbono, CO₂? (C = 12,01; O = 16,00)', tipo: 'numero', respuesta: 44.01, placeholder: 'Respuesta' },
+        { enunciado: '¿Cuántos moles hay en 36,04 g de agua (H₂O, masa molar 18,02 g/mol)?', tipo: 'numero', respuesta: 2, placeholder: 'Respuesta' },
+        { enunciado: 'Según 2H₂ + O₂ → 2H₂O, ¿cuántos moles de H₂O se producen a partir de 5 moles de H₂ (con O₂ en exceso)?', tipo: 'numero', respuesta: 5, placeholder: 'Respuesta' },
+        { enunciado: '¿Cuál es la masa molar (en g/mol) del amoniaco, NH₃? (N = 14,01; H = 1,008)', tipo: 'numero', respuesta: 17.03, placeholder: 'Respuesta' }
     ],
 
     /* ---------------- 6. TEST DE OPCIÓN MÚLTIPLE ----------------
@@ -241,7 +246,12 @@ registrarCapitulo({
         { pregunta: 'La masa molar de un compuesto (en gramos) es numéricamente igual a:', opciones: ['Su masa molecular en amu', 'Su densidad', 'El número de átomos que contiene', 'Su punto de ebullición'], correcta: 'a' },
         { pregunta: 'En una ecuación química balanceada, los coeficientes estequiométricos pueden interpretarse como:', opciones: ['El número de gramos de cada sustancia', 'El número de moles de cada sustancia', 'La temperatura de la reacción', 'La velocidad de la reacción'], correcta: 'b' },
         { pregunta: 'El reactivo limitante es aquel que:', opciones: ['Está presente en mayor cantidad', 'Se consume por completo primero, limitando la cantidad de producto', 'No participa en la reacción', 'Tiene la masa molar más alta'], correcta: 'b' },
-        { pregunta: 'El rendimiento porcentual de una reacción se calcula como:', opciones: ['(rendimiento teórico / rendimiento real) × 100%', '(rendimiento real / rendimiento teórico) × 100%', '(masa de reactivos / masa de productos) × 100%', '(moles del limitante / moles totales) × 100%'], correcta: 'b' }
+        { pregunta: 'El rendimiento porcentual de una reacción se calcula como:', opciones: ['(rendimiento teórico / rendimiento real) × 100%', '(rendimiento real / rendimiento teórico) × 100%', '(masa de reactivos / masa de productos) × 100%', '(moles del limitante / moles totales) × 100%'], correcta: 'b' },
+        { pregunta: 'La composición porcentual en masa de un elemento en un compuesto se calcula dividiendo:', opciones: ['La masa del compuesto entre la masa del elemento', 'La masa del elemento (en 1 mol) entre la masa molar del compuesto, × 100%', 'El número de moles entre el número de Avogadro', 'La masa molar entre la densidad'], correcta: 'b' },
+        { pregunta: 'Al balancear una ecuación química, la ley de conservación de la masa exige que:', opciones: ['Los reactivos pesen menos que los productos', 'El número de átomos de cada elemento sea igual en reactivos y productos', 'Solo se conserve la masa de los productos', 'La masa solo se conserve en reacciones exotérmicas'], correcta: 'b' },
+        { pregunta: 'La fórmula molecular de un compuesto es siempre:', opciones: ['Menor que su fórmula empírica', 'Un múltiplo entero de su fórmula empírica', 'Igual a su composición porcentual', 'Independiente de su masa molar'], correcta: 'b' },
+        { pregunta: '¿Qué mide la economía atómica de una reacción?', opciones: ['La velocidad de la reacción', 'La eficiencia con la que los átomos de los reactivos terminan en el producto deseado', 'El número de moles de reactivo limitante', 'El punto de fusión de los productos'], correcta: 'b' },
+        { pregunta: 'Para compuestos iónicos como NaCl, en vez de "masa molecular" se usa el término:', opciones: ['Masa fórmula', 'Masa atómica', 'Masa nuclear', 'Masa isotópica'], correcta: 'a' }
     ],
 
     /* ---------------- 7. TARJETAS DE MEMORIA ---------------- */
@@ -265,7 +275,9 @@ registrarCapitulo({
             { q: '¿Qué instrumento se usa para determinar masas atómicas y moleculares de forma directa y exacta?', a: 'espectrómetro de masas', tipo: 'texto' },
             { q: 'En una ecuación química, el símbolo (s) representa el estado:', a: 'sólido', tipo: 'texto' },
             { q: 'En una ecuación química, el símbolo (aq) representa una disolución:', a: 'acuosa', tipo: 'texto' },
-            { q: '¿Cómo se llama el reactivo que se consume por completo primero en una reacción?', a: 'reactivo limitante', tipo: 'texto' }
+            { q: '¿Cómo se llama el reactivo que se consume por completo primero en una reacción?', a: 'reactivo limitante', tipo: 'texto' },
+            { q: '¿Cuántos átomos de oxígeno hay en el H₂O₂?', a: '2', tipo: 'texto' },
+            { q: 'En una ecuación química, el símbolo (g) representa el estado:', a: 'gaseoso', tipo: 'texto' }
         ],
         medio: [
             { q: 'El elemento hipotético Q ocurre como 37,50% de ⁴⁷Q (47,054 amu) y 62,50% de ⁵¹Q (50,924 amu). ¿Cuál es su masa atómica promedio (en amu)?', a: '49.473', tipo: 'texto' },
@@ -275,7 +287,9 @@ registrarCapitulo({
             { q: 'Determina la fórmula empírica de un compuesto con 43,64% de P y 56,36% de O en masa.', a: 'P2O5', tipo: 'texto' },
             { q: 'La combustión de 1,05 g de un compuesto de C y H produce 3,30 g de CO₂ y 1,35 g de H₂O; su masa molar es cerca de 70 g. ¿Cuál es su fórmula molecular?', a: 'C5H10', tipo: 'texto' },
             { q: 'Si 59,4 g de silicio reaccionan según 3Si + 2Cr₂O₃ → 3SiO₂ + 4Cr, ¿qué masa de SiO₂ se produce (en g)?', a: '127', tipo: 'texto' },
-            { q: 'Según 3Mg + N₂ → Mg₃N₂, ¿cuántos gramos de magnesio se necesitan para producir 25,0 g de Mg₃N₂?', a: '18.1', tipo: 'texto' }
+            { q: 'Según 3Mg + N₂ → Mg₃N₂, ¿cuántos gramos de magnesio se necesitan para producir 25,0 g de Mg₃N₂?', a: '18.1', tipo: 'texto' },
+            { q: '¿Cuántos moles hay en 72,08 g de agua (masa molar 18,02 g/mol)?', a: '4', tipo: 'texto' },
+            { q: 'Masa molar del NH₃ (N=14,01, H=1,008), en g/mol', a: '17.03', tipo: 'texto' }
         ],
         dificil: [
             { q: 'Si 16,4 g de SO₂ producen 18,1 g de SO₃ en 2SO₂ + O₂ → 2SO₃, ¿cuál es el rendimiento porcentual de la reacción?', a: '88.3', tipo: 'texto' },
@@ -285,7 +299,9 @@ registrarCapitulo({
             { q: '¿Cuántos átomos de oxígeno hay en 124 g de fosfato de calcio, Ca₃(PO₄)₂ (masa molar = 310,2 g)?', a: '1.93x10^24', tipo: 'texto' },
             { q: '¿Cuál es la masa en gramos de 0,382 moles de cafeína, C₈H₁₀O₂N₄?', a: '74.2', tipo: 'texto' },
             { q: '¿Cuál de las siguientes muestras contiene más átomos: 7,68 g de He, 112 g de Fe o 389 g de Hg?', a: 'Fe', tipo: 'texto' },
-            { q: 'En 4NH₃ + 5O₂ → 4NO + 6H₂O, ¿cuántos moles de NO se producen por cada mol de NH₃ que reacciona?', a: '1', tipo: 'texto' }
+            { q: 'En 4NH₃ + 5O₂ → 4NO + 6H₂O, ¿cuántos moles de NO se producen por cada mol de NH₃ que reacciona?', a: '1', tipo: 'texto' },
+            { q: 'Según 2H₂ + O₂ → 2H₂O, ¿cuántos moles de O₂ se necesitan para producir 8 moles de H₂O?', a: '4', tipo: 'texto' },
+            { q: '¿Cuál es la masa molar (g/mol) del ácido sulfúrico, H₂SO₄? (H=1,008; S=32,07; O=16,00)', a: '98.09', tipo: 'texto' }
         ]
     },
 
